@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`makeEventRule will render valid cloudformation 1`] = `
+Object {
+  "Outputs": Object {},
+  "Resources": Object {
+    "EventListenerapiNameeventName2": Object {
+      "Properties": Object {
+        "EventBusName": "eventBus",
+        "EventPattern": Object {
+          "detail-type": Array [
+            "eventName",
+          ],
+          "source": Array [
+            "custom.eventSource",
+          ],
+        },
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "TriggerSubscriptionFunctionapiNameeventName2",
+                "Arn",
+              ],
+            },
+            "Id": "EventListenerapiNameeventName2",
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "EventRuleRoleapiNameeventName2": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "TriggerSubscriptionFunctionapiNameeventName2",
+            "Arn",
+          ],
+        },
+        "Principal": "events.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::GetAtt": Array [
+            "EventListenerapiNameeventName2",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+  },
+}
+`;

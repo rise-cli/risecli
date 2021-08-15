@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`makeLambdaEventTrigger will render correctly 1`] = `
+Object {
+  "Outputs": Object {},
+  "Resources": Object {
+    "TriggerSubscriptionFunctionapiNameeventName2": Object {
+      "Properties": Object {
+        "Code": Object {
+          "ZipFile": "
+            const env = require(\\"process\\").env;
+            const AWS = require(\\"aws-sdk\\");
+            const URL = require(\\"url\\");
+            const https = require('https');
+
+            AWS.config.update({
+            region: process.env.REGION,
+            credentials: new AWS.Credentials(
+                env.AWS_ACCESS_KEY_ID,
+                env.AWS_SECRET_ACCESS_KEY,
+                env.AWS_SESSION_TOKEN
+            ),
+            });
+
+            module.exports.handler = (props) => {
+                const body = {
+                    query: \`query\`,
+                    variables: {
+                        input: {one: props.one,two: props.two,three: props.three}
+                    }
+                }
+                const uri = URL.parse(process.env.ENDPOINT);
+                const httpRequest = new AWS.HttpRequest(uri.href, process.env.REGION);
+                httpRequest.headers.host = uri.host;
+                httpRequest.headers[\\"Content-Type\\"] = \\"application/json\\";
+                httpRequest.method = \\"POST\\";
+                httpRequest.body = JSON.stringify(body);
+
+                const signer = new AWS.Signers.V4(httpRequest, \\"appsync\\", true);
+                signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
+
+                const options = {
+                    hostname: uri.href.slice(8, uri.href.length - 8),
+                    path: '/graphql',
+                    method: httpRequest.method,
+                    body: httpRequest.body,
+                    headers: httpRequest.headers,
+                };
+
+                const req = https.request(options, res => {
+
+                res.on('data', d => {
+                        process.stdout.write(d)
+                    })
+                })
+
+                req.on('error', error => {
+                    console.error(error.message)
+                })
+
+                req.write(JSON.stringify(body))
+                req.end()
+            }",
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "ENDPOINT": Object {
+              "Fn::GetAtt": Array [
+                "GraphQlApi",
+                "GraphQLUrl",
+              ],
+            },
+            "REGION": Object {
+              "Fn::Sub": Array [
+                "\${AWS::Region}",
+                Object {},
+              ],
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "TriggerSubscriptionRoleapiNameeventName2",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "TriggerSubscriptionRoleapiNameeventName2": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sts:AssumeRole",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Array [
+                  "lambda.amazonaws.com",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "appsync:GraphQL",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Array [
+                    Object {
+                      "Fn::Join": Array [
+                        "",
+                        Array [
+                          Object {
+                            "Fn::GetAtt": Array [
+                              "GraphQlApi",
+                              "Arn",
+                            ],
+                          },
+                          "/types/*",
+                        ],
+                      ],
+                    },
+                  ],
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "TriggerSubscriptionPolicyapiName",
+          },
+        ],
+        "RoleName": "TriggerSubscriptionRoleapiNameeventName2",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+  },
+}
+`;

@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildRequestTemplate will create a valid request template 1`] = `
+"
+            #if($util.isNullOrEmpty($ctx.args.input))
+                $util.qr($ctx.stash.put(\\"input\\", {}))	
+            #else
+                $util.qr($ctx.stash.put(\\"input\\", $ctx.args.input))
+            #end
+               $util.qr($ctx.stash.input.put(\\"one\\", \\"1\\"))            $util.qr($ctx.stash.input.put(\\"two\\", $ctx.identity.claims.sub))            $util.qr($ctx.stash.input.put(\\"three\\", $ctx.args.input.id)) 
+             {}"
+`;
+
+exports[`makeMutationPipeline will create a valid vtl pipeline 1`] = `
+Object {
+  "Outputs": Object {},
+  "Resources": Object {
+    "PipelineMutationgetNote": Object {
+      "DependsOn": Array [
+        "DbDatasource",
+        "GraphQlSchema",
+      ],
+      "Properties": Object {
+        "ApiId": Object {
+          "Fn::GetAtt": Array [
+            "GraphQlApi",
+            "ApiId",
+          ],
+        },
+        "FieldName": "getNote",
+        "Kind": "PIPELINE",
+        "PipelineConfig": Object {
+          "Functions": Array [
+            Object {
+              "Fn::GetAtt": Array [
+                "f-1",
+                "FunctionId",
+              ],
+            },
+            Object {
+              "Fn::GetAtt": Array [
+                "f-2",
+                "FunctionId",
+              ],
+            },
+          ],
+        },
+        "RequestMappingTemplate": "
+            #if($util.isNullOrEmpty($ctx.args.input))
+                $util.qr($ctx.stash.put(\\"input\\", {}))	
+            #else
+                $util.qr($ctx.stash.put(\\"input\\", $ctx.args.input))
+            #end
+               $util.qr($ctx.stash.input.put(\\"one\\", \\"1\\"))            $util.qr($ctx.stash.input.put(\\"two\\", $ctx.identity.claims.sub))            $util.qr($ctx.stash.input.put(\\"three\\", $ctx.args.input.id)) 
+             {}",
+        "ResponseMappingTemplate": "
+                #if($ctx.stash.dbresult)
+                  $util.toJson($ctx.stash.dbresult)   
+                #else
+                    $util.toJson($ctx.args)
+                    ## $ctx.stash.eventresult
+                #end
+                ",
+        "TypeName": "Mutation",
+      },
+      "Type": "AWS::AppSync::Resolver",
+    },
+  },
+}
+`;

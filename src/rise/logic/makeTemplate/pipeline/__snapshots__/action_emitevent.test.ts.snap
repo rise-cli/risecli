@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildEventDetailInput will handle special characters correctly 1`] = `
+Object {
+  "Resources": Object {
+    "FunctionEmitmyevent": Object {
+      "DependsOn": Array [
+        "EventBridgeDataSource",
+        "GraphQlSchema",
+      ],
+      "Properties": Object {
+        "ApiId": Object {
+          "Fn::GetAtt": Array [
+            "GraphQlApi",
+            "ApiId",
+          ],
+        },
+        "DataSourceName": "EventBridgeDataSource",
+        "FunctionVersion": "2018-05-29",
+        "Name": "FunctionEmitmyevent",
+        "RequestMappingTemplate": "
+                    {
+                        \\"version\\": \\"2018-05-29\\",
+                        \\"method\\": \\"POST\\",
+                        \\"resourcePath\\": \\"/\\",
+                        \\"params\\": {
+                        \\"headers\\": {
+                            \\"content-type\\": \\"application/x-amz-json-1.1\\",
+                            \\"x-amz-target\\":\\"AWSEvents.PutEvents\\"
+                        },
+                        \\"body\\": {
+                            \\"Entries\\":[ 
+                                    {
+                                        \\"Source\\":\\"custom.source\\",
+                                        \\"EventBusName\\": \\"eventBus\\",
+                                        \\"Detail\\": \\"{\\\\\\"one\\\\\\": \\\\\\"$ctx.identity.claims.sub\\\\\\",\\\\\\"two\\\\\\": \\\\\\"$ctx.args.input.input\\\\\\",\\\\\\"three\\\\\\": \\\\\\"$ctx.stash.dbresult.dbvalue\\\\\\"}\\",
+                                        \\"DetailType\\":\\"event\\"
+                                    }
+                                ]
+                            }
+                        }
+                    }",
+        "ResponseMappingTemplate": "
+                    #if($ctx.error)
+                        $util.error($ctx.error.message, $ctx.error.type)
+                    #end
+   
+                    #if($ctx.result.statusCode == 200)
+                        $util.qr($ctx.stash.put(\\"eventresult\\", $ctx.result.body))
+                        ## If response is 200, return the body.
+                        {
+                            \\"result\\": \\"$util.parseJson($ctx.result.body)\\"
+                        }    
+                    #else
+                        $utils.appendError($ctx.result.body, $ctx.result.statusCode)
+                    #end",
+      },
+      "Type": "AWS::AppSync::FunctionConfiguration",
+    },
+  },
+}
+`;

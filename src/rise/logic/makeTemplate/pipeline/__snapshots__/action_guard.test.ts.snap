@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`makeGuardFunction will make CF JSON for guard vtl function 1`] = `
+Object {
+  "Resources": Object {
+    "FunctionGaurdgetNote2": Object {
+      "DependsOn": Array [
+        "DbDatasource",
+        "GraphQlSchema",
+      ],
+      "Properties": Object {
+        "ApiId": Object {
+          "Fn::GetAtt": Array [
+            "GraphQlApi",
+            "ApiId",
+          ],
+        },
+        "DataSourceName": "DbDatasource",
+        "FunctionVersion": "2018-05-29",
+        "Name": "FunctionGaurdgetNote2",
+        "RequestMappingTemplate": "
+                {
+                  \\"version\\": \\"2017-02-28\\",
+                  \\"operation\\": \\"GetItem\\",
+                  \\"key\\": {
+                     \\"pk\\" : $util.dynamodb.toDynamoDBJson($ctx.identity.claims.sub),
+                     \\"sk\\" : $util.dynamodb.toDynamoDBJson($ctx.args.input.id)
+                  },
+                }",
+        "ResponseMappingTemplate": "
+                    #if(!$ctx.result)
+                        $util.error(\\"Unauthorized\\")
+                    #else
+                        $util.toJson($ctx.result)
+                    #end    
+                ",
+      },
+      "Type": "AWS::AppSync::FunctionConfiguration",
+    },
+  },
+}
+`;
+
+exports[`makeGuardFunction will target pk2 if its defined 1`] = `
+Object {
+  "Resources": Object {
+    "FunctionGaurdgetNote2": Object {
+      "DependsOn": Array [
+        "DbDatasource",
+        "GraphQlSchema",
+      ],
+      "Properties": Object {
+        "ApiId": Object {
+          "Fn::GetAtt": Array [
+            "GraphQlApi",
+            "ApiId",
+          ],
+        },
+        "DataSourceName": "DbDatasource",
+        "FunctionVersion": "2018-05-29",
+        "Name": "FunctionGaurdgetNote2",
+        "RequestMappingTemplate": "
+                {
+                  \\"version\\": \\"2017-02-28\\",
+                  \\"operation\\": \\"GetItem\\",
+                  \\"key\\": {
+                     \\"pk2\\" : $util.dynamodb.toDynamoDBJson($ctx.identity.claims.sub),
+                     \\"sk\\" : $util.dynamodb.toDynamoDBJson($ctx.args.input.id)
+                  },
+                }",
+        "ResponseMappingTemplate": "
+                    #if(!$ctx.result)
+                        $util.error(\\"Unauthorized\\")
+                    #else
+                        $util.toJson($ctx.result)
+                    #end    
+                ",
+      },
+      "Type": "AWS::AppSync::FunctionConfiguration",
+    },
+  },
+}
+`;
