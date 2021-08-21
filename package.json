@@ -1,6 +1,6 @@
 {
     "name": "risecli",
-    "version": "0.0.45",
+    "version": "0.0.47",
     "bin": {
         "rise": "./bin/run"
     },

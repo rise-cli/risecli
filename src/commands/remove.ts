@@ -18,9 +18,9 @@ export default class Remove extends Command {
     async run() {
         const { flags } = this.parse(Remove)
         const input = {
-            stage: flags.stage || 'dev',
-            region: flags.region || 'us-east-1',
-            profile: flags.profile || 'default'
+            stage: flags.stage || 'EMPTY',
+            region: flags.region || 'EMPTY',
+            profile: flags.profile || 'EMPTY'
         }
 
         return await removeCliCommand(input)

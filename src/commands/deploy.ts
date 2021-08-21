@@ -26,9 +26,9 @@ hello world from ./src/hello.ts!
     async run() {
         const { flags } = this.parse(Deploy)
         const input = {
-            stage: flags.stage || 'dev',
-            region: flags.region || 'us-east-1',
-            profile: flags.profile || 'default',
+            stage: flags.stage || 'EMPTY',
+            region: flags.region || 'EMPTY',
+            profile: flags.profile || 'EMPTY',
             ci: flags.ci ? true : false
         }
 

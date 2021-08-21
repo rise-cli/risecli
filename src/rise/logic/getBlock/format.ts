@@ -50,6 +50,10 @@ function combineResolvers(blocks: any[]) {
 }
 
 function createConfig(flags: any, block: any) {
+    flags.stage = flags.stage === 'EMPTY' ? false : flags.stage
+    flags.region = flags.region === 'EMPTY' ? false : flags.region
+    flags.profile = flags.profile === 'EMPTY' ? false : flags.profile
+
     const name = block.config.name.split(' ').join('')
     const profile = flags.profile || block.config.profile || 'default'
     const region = flags.region || block.config.region || 'us-east-1'
