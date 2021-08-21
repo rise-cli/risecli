@@ -1,6 +1,6 @@
 {
     "name": "risecli",
-    "version": "0.0.47",
+    "version": "0.0.48",
     "bin": {
         "rise": "./bin/run"
     },
@@ -8,7 +8,7 @@
     "scripts": {
         "postpack": "rm -f oclif.manifest.json",
         "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-        "ci:test": "./node_modules/.bin/jest --coverage",
+        "ci:test": "./node_modules/.bin/jest --coverage -u",
         "test": "jest --watch --maxWorkers=1 $1",
         "version": "oclif-dev readme && git add README.md"
     },

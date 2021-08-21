@@ -53,10 +53,8 @@ export function makeQueryPipeline(props: any) {
                     ResponseMappingTemplate: `
             #if($ctx.stash.dbresult)
                 $util.toJson($ctx.stash.dbresult)
-                
             #else
-                $util.error("event branch")
-                $ctx.stash.eventresult
+                $util.toJson($ctx.args)
             #end
                 `,
                     TypeName: 'Query'

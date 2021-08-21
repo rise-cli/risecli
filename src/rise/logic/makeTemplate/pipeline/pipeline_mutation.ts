@@ -57,7 +57,6 @@ export function makeMutationPipeline(props: any) {
                   $util.toJson($ctx.stash.dbresult)   
                 #else
                     $util.toJson($ctx.args)
-                    ## $ctx.stash.eventresult
                 #end
                 `,
                     TypeName: 'Mutation'
