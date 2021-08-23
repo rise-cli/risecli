@@ -10,12 +10,18 @@ import {
     validateEvents
 } from './validate_app'
 
-export function getBlock(io: any, path: string, flags: any) {
-    const blocks = getRiseModules(io, path)
+type GetBlockInput = {
+    io: any
+    path: string
+    flags: any
+}
+
+export function getBlock(props: GetBlockInput) {
+    const blocks = getRiseModules(props.io, props.path)
     const formatted = formatRiseBlock({
         root: blocks.root,
         modules: blocks.modules,
-        flags: flags
+        flags: props.flags
     })
 
     /**

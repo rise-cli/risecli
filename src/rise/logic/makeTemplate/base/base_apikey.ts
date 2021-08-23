@@ -5,6 +5,12 @@
  */
 
 export default function makeApiKey() {
+    const TODAYS_DATE = Math.floor(Date.now() / 1000)
+    const YEAR_IN_SECONDS = 31457600
+    const YEAR_FROM_NOW = TODAYS_DATE + YEAR_IN_SECONDS
+
+    const expires = process.env.NODE_ENV === 'test' ? 1660358595 : YEAR_FROM_NOW
+
     return {
         Resources: {
             GraphQlApiKeyDefault: {
@@ -13,7 +19,7 @@ export default function makeApiKey() {
                     ApiId: {
                         'Fn::GetAtt': ['GraphQlApi', 'ApiId']
                     },
-                    Expires: 1660358595
+                    Expires: expires
                 }
             }
         },

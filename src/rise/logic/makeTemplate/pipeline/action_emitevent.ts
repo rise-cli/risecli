@@ -15,7 +15,10 @@ export function buildEventDetailInput(input: any) {
             value = value.replace('#', '$ctx.stash.dbresult.')
         }
 
-        detail = detail + `\\\"${x}\\\": \\\"${value}\\\"`
+        const EVENT_QUOTE = 'RISE_EVENT_QUOTE'
+        detail =
+            detail +
+            `${EVENT_QUOTE}${x}${EVENT_QUOTE}: ${EVENT_QUOTE}${value}${EVENT_QUOTE}`
 
         if (i + 1 < array.length) {
             detail = detail + ','

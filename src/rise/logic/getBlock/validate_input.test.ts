@@ -24,9 +24,60 @@ const validBlock = {
         name: 'example'
     }
 }
+
 test('validateBlockStrucure will return true if valid', () => {
     const result = validateBlockStructure(validBlock, false)
     expect(result).toBeTruthy()
+})
+test('validateBlockStrucure will throw error if "RISE_" is used', () => {
+    const test = () => {
+        validateBlockStructure(
+            {
+                ...validBlock,
+                resolvers: {
+                    Query: {
+                        ['RISE_query']: [
+                            {
+                                type: 'db',
+                                action: 'get'
+                            }
+                        ]
+                    }
+                }
+            },
+            false
+        )
+    }
+
+    expect(test).toThrow(
+        'RISE_ is a reserved string and cannot be used in your rise app definition'
+    )
+
+    const test2 = () => {
+        validateBlockStructure(
+            {
+                ...validBlock,
+                resolvers: {
+                    Query: {
+                        hello: [
+                            {
+                                type: 'add',
+                                pk: 'RISE_config'
+                            },
+                            {
+                                type: 'db',
+                                action: 'get'
+                            }
+                        ]
+                    }
+                }
+            },
+            false
+        )
+    }
+    expect(test2).toThrow(
+        'RISE_ is a reserved string and cannot be used in your rise app definition'
+    )
 })
 
 test('validateBlockStrucure will throw error if schema is not defined', () => {

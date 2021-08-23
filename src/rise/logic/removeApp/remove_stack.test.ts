@@ -5,7 +5,7 @@ test('removeDeployment can update stack', async () => {
         remove: () => true
     }
 
-    const result = await removeDeployment(io, 'my-stack')
+    const result = await removeDeployment({ io, name: 'my-stack' })
     expect(result).toBe('REMOVING')
 })
 
@@ -16,7 +16,7 @@ test('removeDeployment will throw error if something goes wrong', async () => {
         }
     }
 
-    const test = async () => await removeDeployment(io, 'my-stack')
+    const test = async () => await removeDeployment({ io, name: 'my-stack' })
 
     await expect(test()).rejects.toThrow('something went wrong')
 })

@@ -12,15 +12,15 @@
 type getCredentialsInput = {
     io: any
     AWS: any
-    blockRegion?: string | false
-    blockProfile?: string | false
+    region?: string | false
+    profile?: string | false
 }
 
 export function setAWSCredentials({
     io,
     AWS,
-    blockRegion = false,
-    blockProfile = false
+    region = false,
+    profile = false
 }: getCredentialsInput): any {
     /**
      * If AWS credentials are defined as ENV variables,
@@ -34,7 +34,7 @@ export function setAWSCredentials({
             AWS: AWS,
             key: process.env.AWS_SECRET_ACCESS_KEY,
             secret: process.env.AWS_SECRET_ACCESS_KEY,
-            region: blockRegion || 'us-east-1'
+            region: region || 'us-east-1'
         })
     }
 
@@ -47,8 +47,8 @@ export function setAWSCredentials({
         try {
             io.setCredentials({
                 AWS,
-                profile: blockProfile,
-                region: blockRegion || 'us-east-1'
+                profile: profile,
+                region: region || 'us-east-1'
             })
         } catch (e) {
             throw new Error(

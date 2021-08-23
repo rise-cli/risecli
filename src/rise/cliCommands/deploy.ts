@@ -28,57 +28,68 @@ type Input = {
 export async function deployCliCommand(input: Input) {
     try {
         /**
-         * Prepare Project for deployment
+         * 1. Get Rise Block definition from file system,
+         * validate input and overall structure,
+         * and return formatted definition
          */
-        const block = await getBlock(
-            {
+        const block = await getBlock({
+            io: {
                 getFile,
                 getJsFile,
                 getDirectories
             },
-            process.cwd(),
-            input
-        )
+            path: process.cwd(),
+            flags: input
+        })
 
+        /**
+         * 2. Get AWS credentials from file
+         * system or env variables
+         */
         const AWS = await setAWSCredentials({
             io: {
                 setConfig,
                 setCredentials
             },
             AWS: AWSSDK,
-            blockProfile: block.config.profile,
-            blockRegion: block.config.region
+            profile: block.config.profile,
+            region: block.config.region
         })
 
-        const template = createTemplate(block)
+        /**
+         * 3. Create Cloudformation template from
+         * Rise Block definition
+         */
+        const unformattedTemplate = createTemplate(block)
 
         /**
-         * Write Template
+         * 4. Write CloudFormation template to project
          */
-        const te = writeTemplateFile({
+        const template = writeTemplateFile({
             io: {
                 writeFile
             },
-            template,
+            template: unformattedTemplate,
             ci: input.ci || false
         })
 
         /**
-         * Deploy
+         * 5. Start CloudFormation deployment
          */
         ui.default.action.start('Deploying Resources (avg. 1 minute)')
 
-        await startDeployment(
-            {
+        await startDeployment({
+            io: {
                 create: createStack(AWS),
                 update: updateStack(AWS)
             },
-            block.config.name,
-            te
-        )
+            name: block.config.name,
+            template: template.yml
+        })
 
         /**
-         * Check Status
+         * 6. Check status of deployment and return api details
+         * once deployment is finished
          */
         await getDeployStatus({
             io: {

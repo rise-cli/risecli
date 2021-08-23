@@ -18,37 +18,49 @@ type Input = {
 export async function removeCliCommand(input: Input) {
     try {
         /**
-         * Prepare Project for deployment
+         * 1. Get Rise Block definition from file system,
+         * validate input and overall structure,
+         * and return formatted definition
          */
-        const block = await getBlock(
-            {
+        const block = await getBlock({
+            io: {
                 getFile,
                 getJsFile,
                 getDirectories
             },
-            process.cwd(),
-            input
-        )
+            path: process.cwd(),
+            flags: input
+        })
 
+        /**
+         * 2. Get AWS credentials from file
+         * system or env variables
+         */
         const AWS = await setAWSCredentials({
             io: {
                 setConfig,
                 setCredentials
             },
             AWS: AWSSDK,
-            blockProfile: block.config.profile,
-            blockRegion: block.config.region
+            profile: block.config.profile,
+            region: block.config.region
         })
 
+        /**
+         * 3. Start CloudFormation stack removal
+         */
         ui.default.action.start('Removing Resources (avg. 1 minute)')
-
-        await removeDeployment(
-            {
+        await removeDeployment({
+            io: {
                 remove: removeStack(AWS)
             },
-            block.config.name
-        )
+            name: block.config.name
+        })
 
+        /**
+         * 4. Check status of removal and return success
+         * or fail once operation is done
+         */
         const removeStatus = await getRemoveStatus({
             io: {
                 getInfo: async () => getStackInfo(AWS)(block.config.name)

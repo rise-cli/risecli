@@ -13,5 +13,5 @@ test('write template file will format file correctly', () => {
         ci: false
     })
 
-    expect(result).toBe(output)
+    expect(result.yml).toBe(output)
 })

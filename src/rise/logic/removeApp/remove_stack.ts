@@ -1,4 +1,12 @@
-export async function removeDeployment(io: any, name: string): Promise<string> {
+type RemoveDeploymentInput = {
+    io: any
+    name: string
+}
+
+export async function removeDeployment({
+    io,
+    name
+}: RemoveDeploymentInput): Promise<string> {
     try {
         await io.remove({ name })
         return 'REMOVING'

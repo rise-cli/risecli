@@ -33,7 +33,7 @@ Object {
                                     {
                                         \\"Source\\":\\"custom.source\\",
                                         \\"EventBusName\\": \\"eventBus\\",
-                                        \\"Detail\\": \\"{\\\\\\"one\\\\\\": \\\\\\"$ctx.identity.claims.sub\\\\\\",\\\\\\"two\\\\\\": \\\\\\"$ctx.args.input.input\\\\\\",\\\\\\"three\\\\\\": \\\\\\"$ctx.stash.dbresult.dbvalue\\\\\\"}\\",
+                                        \\"Detail\\": \\"{RISE_EVENT_QUOTEoneRISE_EVENT_QUOTE: RISE_EVENT_QUOTE$ctx.identity.claims.subRISE_EVENT_QUOTE,RISE_EVENT_QUOTEtwoRISE_EVENT_QUOTE: RISE_EVENT_QUOTE$ctx.args.input.inputRISE_EVENT_QUOTE,RISE_EVENT_QUOTEthreeRISE_EVENT_QUOTE: RISE_EVENT_QUOTE$ctx.stash.dbresult.dbvalueRISE_EVENT_QUOTE}\\",
                                         \\"DetailType\\":\\"event\\"
                                     }
                                 ]

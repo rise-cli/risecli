@@ -1,6 +1,12 @@
 import { ValidationError } from '../../utils/errors'
 
 export function validateBlockStructure(block: any, isModule: boolean) {
+    if (JSON.stringify(block).includes('RISE_')) {
+        throw new ValidationError(
+            'RISE_ is a reserved string and cannot be used in your rise app definition'
+        )
+    }
+
     if (!block.schema || typeof block.schema !== 'string') {
         throw new ValidationError('Rise block does have a valid GraphQL schema')
     }

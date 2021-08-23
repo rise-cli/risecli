@@ -7,7 +7,9 @@ test('buildEventDetailInput will create a valid event detail object', () => {
     }
 
     const result = buildEventDetailInput(input)
-    expect(result).toBe('"{\\"one\\": \\"1\\",\\"two\\": \\"2\\"}"')
+    expect(result).toBe(
+        '"{RISE_EVENT_QUOTEoneRISE_EVENT_QUOTE: RISE_EVENT_QUOTE1RISE_EVENT_QUOTE,RISE_EVENT_QUOTEtwoRISE_EVENT_QUOTE: RISE_EVENT_QUOTE2RISE_EVENT_QUOTE}"'
+    )
 })
 
 test('buildEventDetailInput will handle special characters correctly', () => {
@@ -19,7 +21,7 @@ test('buildEventDetailInput will handle special characters correctly', () => {
 
     const result = buildEventDetailInput(input)
     expect(result).toBe(
-        '"{\\"one\\": \\"$ctx.identity.claims.sub\\",\\"two\\": \\"$ctx.args.input.input\\",\\"three\\": \\"$ctx.stash.dbresult.dbvalue\\"}"'
+        '"{RISE_EVENT_QUOTEoneRISE_EVENT_QUOTE: RISE_EVENT_QUOTE$ctx.identity.claims.subRISE_EVENT_QUOTE,RISE_EVENT_QUOTEtwoRISE_EVENT_QUOTE: RISE_EVENT_QUOTE$ctx.args.input.inputRISE_EVENT_QUOTE,RISE_EVENT_QUOTEthreeRISE_EVENT_QUOTE: RISE_EVENT_QUOTE$ctx.stash.dbresult.dbvalueRISE_EVENT_QUOTE}"'
     )
 })
 

@@ -6,7 +6,11 @@ test('startDeployment can update stack', async () => {
         update: () => true
     }
 
-    const result = await startDeployment(io, 'my-stack', 'MOCK_TEMPLATE')
+    const result = await startDeployment({
+        io,
+        name: 'my-stack',
+        template: 'MOCK_TEMPLATE'
+    })
     expect(result).toBe('UPDATING')
 })
 
@@ -18,7 +22,11 @@ test('startDeployment can create stack', async () => {
         }
     }
 
-    const result = await startDeployment(io, 'my-stack', 'MOCK_TEMPLATE')
+    const result = await startDeployment({
+        io,
+        name: 'my-stack',
+        template: 'MOCK_TEMPLATE'
+    })
     expect(result).toBe('CREATING')
 })
 
@@ -30,7 +38,11 @@ test('startDeployment can return no update required state', async () => {
         }
     }
 
-    const result = await startDeployment(io, 'my-stack', 'MOCK_TEMPLATE')
+    const result = await startDeployment({
+        io,
+        name: 'my-stack',
+        template: 'MOCK_TEMPLATE'
+    })
     expect(result).toBe('NOTHING')
 })
 
@@ -43,7 +55,11 @@ test('startDeployment will error if something goes wrong with update', async () 
     }
 
     const test = async () =>
-        await startDeployment(io, 'my-stack', 'MOCK_TEMPLATE')
+        await startDeployment({
+            io,
+            name: 'my-stack',
+            template: 'MOCK_TEMPLATE'
+        })
 
     await expect(test()).rejects.toThrow('Some other error.')
 })
@@ -59,7 +75,11 @@ test('startDeployment will error if something goes wrong with create', async () 
     }
 
     const test = async () =>
-        await startDeployment(io, 'my-stack', 'MOCK_TEMPLATE')
+        await startDeployment({
+            io,
+            name: 'my-stack',
+            template: 'MOCK_TEMPLATE'
+        })
 
     await expect(test()).rejects.toThrow('Some other error.')
 })

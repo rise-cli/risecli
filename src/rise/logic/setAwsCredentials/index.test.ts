@@ -32,7 +32,7 @@ test('getCredentials will return AWS from env variables and block defined region
     const result = setAWSCredentials({
         io,
         AWS: 'MOCK',
-        blockRegion: 'us-east-2'
+        region: 'us-east-2'
     })
     expect(result).toBe('MOCK')
     expect(io.setConfig).toHaveBeenCalledWith({
@@ -55,7 +55,7 @@ test('getCredentials will return AWS with credentials from local computer', () =
     const result = setAWSCredentials({
         io,
         AWS: 'MOCK',
-        blockRegion: 'us-east-2'
+        region: 'us-east-2'
     })
     expect(result).toBe('MOCK')
     expect(io.setCredentials).toHaveBeenCalledWith({
@@ -79,7 +79,7 @@ test('getCredentials will throw error if ini does not work', () => {
         setAWSCredentials({
             io,
             AWS: 'MOCK',
-            blockRegion: 'us-east-2'
+            region: 'us-east-2'
         })
     } catch (e) {
         expect(e.message).toBe(

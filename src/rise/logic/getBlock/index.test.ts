@@ -70,10 +70,14 @@ const io = {
 }
 
 test('getBlock will get, format, and validate', () => {
-    const result = getBlock(io, '/test', {
-        region: 'us-east-2',
-        stage: 'qa',
-        profile: 'blue'
+    const result = getBlock({
+        io,
+        path: '/test',
+        flags: {
+            region: 'us-east-2',
+            stage: 'qa',
+            profile: 'blue'
+        }
     })
 
     expect(result).toEqual({
