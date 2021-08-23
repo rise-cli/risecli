@@ -34,8 +34,8 @@ test('displayProgressDetails will render styled table to terminal', () => {
         ).toBeTruthy()
         expect(progressDisplay[2].includes('UPDATING')).toBeTruthy()
 
-        expect(progressDisplay[2].includes('Db')).toBeTruthy()
-        expect(progressDisplay[2].includes('COMPLETE')).toBeTruthy()
+        expect(progressDisplay[3].includes('Db')).toBeTruthy()
+        expect(progressDisplay[3].includes('COMPLETE')).toBeTruthy()
     } else {
         expect(progressDisplay).toEqual([
             '\x1B[90m\x1B[1mResource                 \x1B[22m\x1B[39m | \x1B[90m\x1B[1mStatus\x1B[22m\x1B[39m',
