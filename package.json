@@ -4,7 +4,7 @@
     "bin": {
         "rise": "./bin/run"
     },
-    "bugs": "https://github.com/rise4/riseapicli/issues",
+    "bugs": "https://github.com/rise-cli/risecli/issues",
     "scripts": {
         "postpack": "rm -f oclif.manifest.json",
         "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
@@ -46,7 +46,7 @@
         "/npm-shrinkwrap.json",
         "/oclif.manifest.json"
     ],
-    "homepage": "https://github.com/rise4/riseapicli",
+    "homepage": "https://github.com/rise-cli/risecli",
     "keywords": [
         "oclif"
     ],
@@ -59,6 +59,6 @@
             "@oclif/plugin-help"
         ]
     },
-    "repository": "rise4/riseapicli",
+    "repository": "rise-cli/risecli",
     "types": "lib/index.d.ts"
 }
