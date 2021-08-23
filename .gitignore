@@ -2,7 +2,6 @@ node_modules
 bin
 coverage
 yarn.lock
-package-lock.json
 .vscode
 .DS_Store
 lib
