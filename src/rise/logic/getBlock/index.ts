@@ -24,6 +24,7 @@ export function getBlock(props: GetBlockInput) {
         flags: props.flags
     })
 
+    console.log(JSON.stringify(formatted, null, 2))
     /**
      * Validate Rise App Scenarios
      *

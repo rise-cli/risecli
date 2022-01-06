@@ -15,6 +15,9 @@ import { writeTemplateFile } from '../logic/writeTemplateFile'
 import { startDeployment } from '../logic/deploy/deploy_stack'
 import { getDeployStatus } from '../logic/deploy/get_deploy_status'
 
+import riseAppUtils from 'riseapp-utils'
+import { uploadLambda } from '../logic/uploadLambda'
+
 const ui = require('cli-ux')
 const chalk = require('chalk')
 
@@ -57,10 +60,28 @@ export async function deployCliCommand(input: Input) {
         })
 
         /**
+         * Handle Functions
+         */
+
+        const uploadInputs = {
+            io: {
+                getDirectories: riseAppUtils.io.fileSystem.getDirectories,
+                getJsFile: riseAppUtils.io.fileSystem.getJsFile,
+                makeFolders: riseAppUtils.io.package.makeFolders,
+                packageCode: riseAppUtils.io.package.packageCode,
+                uploadToS3: riseAppUtils.io.s3.uploadToS3(AWS)
+            },
+            block: block,
+            projectFolderPath: process.cwd()
+        }
+
+        const bucketArn = await uploadLambda(uploadInputs)
+
+        /**
          * 3. Create Cloudformation template from
          * Rise Block definition
          */
-        const unformattedTemplate = createTemplate(block)
+        const unformattedTemplate = createTemplate(block, bucketArn)
 
         /**
          * 4. Write CloudFormation template to project
@@ -72,6 +93,51 @@ export async function deployCliCommand(input: Input) {
             template: unformattedTemplate,
             ci: input.ci || false
         })
+        //return
+
+        // console.log(
+        //     'L',
+        //     template.yml
+        //         .replace(/  /g, ' ')
+        //         .replace(/  /g, ' ')
+        //         .replace(/  /g, ' ')
+        //         .replace(/  /g, ' ')
+        //         .replace(/  /g, ' ').length
+        // )
+        // return
+
+        console.log(
+            '---<<>>> ',
+            template.yml
+                .replace(/  /g, ' ')
+                .replace(/  /g, ' ')
+                .replace(/  /g, ' ')
+                .replace(/  /g, ' ')
+                .replace(/  /g, ' ')
+                .replace(/  /g, ' ')
+                .replace(/  /g, ' ')
+                .replace(/  /g, ' ')
+
+                .replace(/  /g, ' ').length
+        )
+
+        //return
+        //return
+        // console.log(JSON.stringify(unformattedTemplate, null, 2))
+        // return
+        // add permissions to fucntion actions
+
+        //    try {
+        //        const x = require(process.cwd() + '/functions/' + lambda)
+        //        if (x.permissions) {
+        //            console.log(x.permissions)
+        //        }
+        //    } catch (e) {
+        //        console.log('..er: ', e)
+        //    }
+        // Object.keys(block.resolvers.Query || {}).
+
+        // return
 
         /**
          * 5. Start CloudFormation deployment
@@ -85,6 +151,11 @@ export async function deployCliCommand(input: Input) {
             },
             name: block.config.name,
             template: template.yml
+                .replace(/  /g, ' ')
+                .replace(/  /g, ' ')
+                .replace(/  /g, ' ')
+                .replace(/  /g, ' ')
+                .replace(/  /g, ' ')
         })
 
         /**
@@ -112,7 +183,7 @@ export async function deployCliCommand(input: Input) {
         ui.default.action.stop()
 
         return
-    } catch (e) {
+    } catch (e: any) {
         if (e.type === 'validation') {
             console.log(chalk.magenta('Validation:'))
             console.log(e.message)

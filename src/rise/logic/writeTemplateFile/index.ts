@@ -113,7 +113,13 @@ function writeYmlTemplate(props: WriteTemplateFileInput) {
 export function writeTemplateFile(props: WriteTemplateFileInput): {
     yml: string
 } {
+    //const xx = takeOutQuotes(JSON.stringify(props.template))
+    // console.log('--->>>>?? ', xx)
     return {
-        yml: writeYmlTemplate(props)
+        yml: JSON.stringify(props.template)
+        // .split('RISE_EVENT_QUOTE')
+        // .join(`\\"`)
+
+        //writeYmlTemplate(props)
     }
 }

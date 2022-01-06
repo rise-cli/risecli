@@ -41,6 +41,11 @@ const mockCf = {
             [`EVENTRULE_${x.eventName}_${x.index}`]: true
         }
     }),
+    makeLambda: (x: any) => ({
+        Resources: {
+            [`FUNCTIONLAMBDA_${x.name}`]: true
+        }
+    }),
     makeQueryPipeline: (x: any) => ({
         Resources: {
             [`PIPELINEQUERY_${x.field}`]: {
@@ -82,6 +87,10 @@ const mockRiseFile = {
                     action: 'get'
                 },
                 {
+                    type: 'function',
+                    id: 'processSomething'
+                },
+                {
                     type: 'db',
                     action: 'list'
                 }
@@ -110,6 +119,10 @@ const mockRiseFile = {
                 {
                     type: 'db',
                     action: 'get'
+                },
+                {
+                    type: 'function',
+                    id: 'processSomething'
                 },
                 {
                     type: 'db',
@@ -153,7 +166,7 @@ const mockRiseFile = {
 }
 
 test('buildPipelines will render', () => {
-    const result = buildPipelines(mockCf, mockRiseFile)
+    const result = buildPipelines(mockCf, mockRiseFile, 'arn:s3:::mybucket')
 
     expect(result).toEqual({
         Resources: {
@@ -164,6 +177,7 @@ test('buildPipelines will render', () => {
                 functions: [
                     'FunctionGaurdhelloa',
                     'FunctionGet',
+                    'FunctionLambdaprocessSomething',
                     'FunctionQuery'
                 ],
                 add: {
@@ -172,17 +186,19 @@ test('buildPipelines will render', () => {
                 }
             },
             GUARD_createHello_a: true,
+            FUNCTIONLAMBDA_processSomething: true,
             DB_SET: true,
             DB_REMOVE: true,
-            EMIT_createHellog: true,
+            EMIT_createHelloh: true,
             PIPELINEMUTATION_createHello: {
                 functions: [
                     'FunctionGaurdcreateHelloa',
                     'FunctionSet',
                     'FunctionRemove',
                     'FunctionGet',
+                    'FunctionLambdaprocessSomething',
                     'FunctionQuery',
-                    'FunctionEmitcreateHellog'
+                    'FunctionEmitcreateHelloh'
                 ],
                 add: {
                     pk: 'note',

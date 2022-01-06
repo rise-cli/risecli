@@ -12,12 +12,14 @@ export function buildEventInput(eventInput: any) {
 }
 
 export function makeLambdaEventTrigger({
+    key,
     apiName,
     eventName,
     index,
     query,
     eventInput
 }: {
+    key: string
     apiName: string
     eventName: string
     index: number
@@ -83,36 +85,37 @@ export function makeLambdaEventTrigger({
 
     return {
         Resources: {
-            [`TriggerSubscriptionFunction${apiName}${eventName}${index}`]: {
-                Type: 'AWS::Lambda::Function',
-                Properties: {
-                    Runtime: 'nodejs12.x',
-                    Handler: 'index.handler',
-                    Role: {
-                        'Fn::GetAtt': [
-                            `TriggerSubscriptionRole${apiName}${eventName}${index}`,
-                            'Arn'
-                        ]
-                    },
-                    Code: {
-                        ZipFile: code
-                    },
-                    Environment: {
-                        Variables: {
-                            REGION: {
-                                'Fn::Sub': ['${AWS::Region}', {}]
-                            },
-                            ENDPOINT: {
-                                'Fn::GetAtt': ['GraphQlApi', 'GraphQLUrl']
+            [`TriggerSubscriptionFunction${apiName}${key}${eventName}${index}`]:
+                {
+                    Type: 'AWS::Lambda::Function',
+                    Properties: {
+                        Runtime: 'nodejs12.x',
+                        Handler: 'index.handler',
+                        Role: {
+                            'Fn::GetAtt': [
+                                `TriggerSubscriptionRole${apiName}${key}${eventName}${index}`,
+                                'Arn'
+                            ]
+                        },
+                        Code: {
+                            ZipFile: code
+                        },
+                        Environment: {
+                            Variables: {
+                                REGION: {
+                                    'Fn::Sub': ['${AWS::Region}', {}]
+                                },
+                                ENDPOINT: {
+                                    'Fn::GetAtt': ['GraphQlApi', 'GraphQLUrl']
+                                }
                             }
                         }
                     }
-                }
-            },
-            [`TriggerSubscriptionRole${apiName}${eventName}${index}`]: {
+                },
+            [`TriggerSubscriptionRole${apiName}${key}${eventName}${index}`]: {
                 Type: 'AWS::IAM::Role',
                 Properties: {
-                    RoleName: `TriggerSubscriptionRole${apiName}${eventName}${index}`,
+                    RoleName: `TriggerSubscriptionRole${apiName}${key}${eventName}${index}`,
                     AssumeRolePolicyDocument: {
                         Version: '2012-10-17',
                         Statement: [

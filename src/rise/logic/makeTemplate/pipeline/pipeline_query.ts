@@ -9,7 +9,9 @@ export function buildRequestTemplate(config: any) {
     Object.keys(config).forEach((k) => {
         let value = config[k]
 
-        if (value.startsWith('$')) {
+        if (value.startsWith('#userId')) {
+            value = value.replace('#userId', '$ctx.stash.userresult')
+        } else if (value.startsWith('$')) {
             value = value.replace('$', '$ctx.args.input.')
         } else if (value.startsWith('!')) {
             value = value.replace('!', '$ctx.identity.claims.')

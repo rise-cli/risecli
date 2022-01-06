@@ -1,10 +1,12 @@
 export function makeEventRule({
+    key,
     apiName,
     eventBus,
     eventSource,
     eventName,
     index
 }: {
+    key: string
     apiName: string
     eventName: string
     index: number
@@ -13,7 +15,7 @@ export function makeEventRule({
 }) {
     return {
         Resources: {
-            [`EventListener${apiName}${eventName}${index}`]: {
+            [`EventListener${apiName}${key}${eventName}${index}`]: {
                 Type: 'AWS::Events::Rule',
                 Properties: {
                     EventBusName: eventBus,
@@ -25,22 +27,22 @@ export function makeEventRule({
                         {
                             Arn: {
                                 'Fn::GetAtt': [
-                                    `TriggerSubscriptionFunction${apiName}${eventName}${index}`,
+                                    `TriggerSubscriptionFunction${apiName}${key}${eventName}${index}`,
                                     'Arn'
                                 ]
                             },
-                            Id: `EventListener${apiName}${eventName}${index}`
+                            Id: `EventListener${apiName}${key}${eventName}${index}`
                         }
                     ]
                 }
             },
 
-            [`EventRuleRole${apiName}${eventName}${index}`]: {
+            [`EventRuleRole${apiName}${key}${eventName}${index}`]: {
                 Type: 'AWS::Lambda::Permission',
                 Properties: {
                     FunctionName: {
                         'Fn::GetAtt': [
-                            `TriggerSubscriptionFunction${apiName}${eventName}${index}`,
+                            `TriggerSubscriptionFunction${apiName}${key}${eventName}${index}`,
                             'Arn'
                         ]
                     },
@@ -48,7 +50,7 @@ export function makeEventRule({
                     Principal: 'events.amazonaws.com',
                     SourceArn: {
                         'Fn::GetAtt': [
-                            `EventListener${apiName}${eventName}${index}`,
+                            `EventListener${apiName}${key}${eventName}${index}`,
                             'Arn'
                         ]
                     }

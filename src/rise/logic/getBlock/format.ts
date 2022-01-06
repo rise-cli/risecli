@@ -1,5 +1,6 @@
 import { validateBlockStructure, validateAction } from './validate_input'
 const qlmerge = require('@graphql-tools/merge')
+const { print } = require('graphql')
 
 type FormatInput = {
     root: any
@@ -100,6 +101,8 @@ export function formatRiseBlock(input: FormatInput) {
      *
      */
     const config = createConfig(input.flags, input.root)
+
+    // console.log(print(schema))
 
     return {
         schema,

@@ -15,6 +15,10 @@ export function buildEventDetailInput(input: any) {
             value = value.replace('#', '$ctx.stash.dbresult.')
         }
 
+        if (value.startsWith('@output')) {
+            value = value.replace('@output', '$ctx.prev.result')
+        }
+
         const EVENT_QUOTE = 'RISE_EVENT_QUOTE'
         detail =
             detail +
@@ -25,7 +29,9 @@ export function buildEventDetailInput(input: any) {
         }
     })
     detail = detail + `}"`
-    return detail
+    const x = detail.split('RISE_EVENT_QUOTE').join(`\\\"`)
+    console.log('======== ', x)
+    return x
 }
 
 export function makeEmitEvent(props: any) {

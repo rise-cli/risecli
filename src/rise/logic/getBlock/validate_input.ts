@@ -31,13 +31,17 @@ export function validateBlockStructure(block: any, isModule: boolean) {
 }
 
 export function validateAction(action: any) {
-    if (!['db', 'guard', 'add', 'emit-event'].includes(action.type)) {
+    if (
+        !['db', 'guard', 'add', 'emit-event', 'function', 'users'].includes(
+            action.type
+        )
+    ) {
         throw new ValidationError(
             `${action.type} is not a valid action for Queries or Mutations`
         )
     }
 
-    if (['db', 'guard', 'add'].includes(action.type)) {
+    if (['guard', 'add'].includes(action.type)) {
         Object.keys(action).forEach((key: string) => {
             if (typeof action[key] !== 'string') {
                 throw new ValidationError(
@@ -52,6 +56,15 @@ export function validateAction(action: any) {
             throw new ValidationError(
                 action.action +
                     ' is not a valid db action. Valid types are: "set", "remove", "get", "list"'
+            )
+        }
+    }
+
+    if (action.type === 'users') {
+        if (!['add', 'remove'].includes(action.action)) {
+            throw new ValidationError(
+                action.action +
+                    ' is not a valid users action. Valid types are: "add", "remove"'
             )
         }
     }

@@ -5,6 +5,9 @@ import schema from './base_schema'
 import apiKey from './base_apikey'
 import datasource from './base_datasource_db'
 import datasourceEventBridge from './base_datasource_events'
+import datasourceCognito from './base_datasource_cognito'
+import datasourceNone from './base_datasource_none'
+import datasourceStepFunctions from './base_datasource_stepfunctions'
 
 export default (rise: any) => {
     const db = database({
@@ -45,6 +48,16 @@ export default (rise: any) => {
               Outputs: {}
           }
 
+    const cognitoDs = rise.config.auth
+        ? datasourceCognito({
+              region: rise.config.region,
+              apiName: rise.config.name
+          })
+        : {
+              Resources: {},
+              Outputs: {}
+          }
+
     // const triggerFunction = eventBridgeTrigger({
     //     apiName: rise.config.name
     // })
@@ -57,9 +70,13 @@ export default (rise: any) => {
             ...ds.Resources,
             ...db.Resources,
             ...eventDs.Resources,
-            ...cog.Resources
-
-            //...triggerFunction.Resources
+            ...cog.Resources,
+            ...cognitoDs.Resources,
+            ...datasourceNone().Resources,
+            ...datasourceStepFunctions({
+                region: rise.config.region,
+                apiName: rise.config.name
+            }).Resources
         },
         Outputs: {
             ...ql.Outputs,
@@ -68,8 +85,13 @@ export default (rise: any) => {
             ...ds.Outputs,
             ...db.Outputs,
             ...eventDs.Outputs,
-            ...cog.Outputs
-            //...triggerFunction.Outputs
+            ...cog.Outputs,
+            ...cognitoDs.Outputs,
+            ...datasourceNone().Outputs,
+            ...datasourceStepFunctions({
+                region: rise.config.region,
+                apiName: rise.config.name
+            }).Outputs
         }
     }
 }
