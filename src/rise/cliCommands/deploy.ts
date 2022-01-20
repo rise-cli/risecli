@@ -93,51 +93,6 @@ export async function deployCliCommand(input: Input) {
             template: unformattedTemplate,
             ci: input.ci || false
         })
-        //return
-
-        // console.log(
-        //     'L',
-        //     template.yml
-        //         .replace(/  /g, ' ')
-        //         .replace(/  /g, ' ')
-        //         .replace(/  /g, ' ')
-        //         .replace(/  /g, ' ')
-        //         .replace(/  /g, ' ').length
-        // )
-        // return
-
-        console.log(
-            '---<<>>> ',
-            template.yml
-                .replace(/  /g, ' ')
-                .replace(/  /g, ' ')
-                .replace(/  /g, ' ')
-                .replace(/  /g, ' ')
-                .replace(/  /g, ' ')
-                .replace(/  /g, ' ')
-                .replace(/  /g, ' ')
-                .replace(/  /g, ' ')
-
-                .replace(/  /g, ' ').length
-        )
-
-        //return
-        //return
-        // console.log(JSON.stringify(unformattedTemplate, null, 2))
-        // return
-        // add permissions to fucntion actions
-
-        //    try {
-        //        const x = require(process.cwd() + '/functions/' + lambda)
-        //        if (x.permissions) {
-        //            console.log(x.permissions)
-        //        }
-        //    } catch (e) {
-        //        console.log('..er: ', e)
-        //    }
-        // Object.keys(block.resolvers.Query || {}).
-
-        // return
 
         /**
          * 5. Start CloudFormation deployment
@@ -151,11 +106,6 @@ export async function deployCliCommand(input: Input) {
             },
             name: block.config.name,
             template: template.yml
-                .replace(/  /g, ' ')
-                .replace(/  /g, ' ')
-                .replace(/  /g, ' ')
-                .replace(/  /g, ' ')
-                .replace(/  /g, ' ')
         })
 
         /**
